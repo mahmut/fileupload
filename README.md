@@ -17,7 +17,7 @@ This package is available via Composer:
 ```json
 {
   "require": {
-    "gargron/fileupload": "~1.4.0"
+    "mahmut/fileupload": "~1.0.0"
   }
 }
 ```
