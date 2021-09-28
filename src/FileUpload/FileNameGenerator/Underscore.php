@@ -1,19 +1,22 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: decola
- * Date: 11.07.14
- * Time: 14:00
+ * author : Mahmut Özdemir
+ * web    : www.mahmutozdemir.com.tr
+ * email  : bilgi@mahmutozdemir.com.tr
+ * ----------------------------------------
+ * Date   : 2021-09-28 15:21
+ * File   : Underscore.php
  */
 
 namespace FileUpload\FileNameGenerator;
 
+use Cocur\Slugify\Slugify;
 use FileUpload\FileSystem\FileSystem;
 use FileUpload\FileUpload;
 use FileUpload\PathResolver\PathResolver;
 use FileUpload\Util;
 
-class Slug implements FileNameGenerator
+class Underscore implements FileNameGenerator
 {
     /**
      * PathResolver
@@ -45,7 +48,7 @@ class Slug implements FileNameGenerator
         $source_name = $this->getSluggedFileName($source_name);
         $uniqueFileName = $this->getUniqueFilename($source_name, $type, $index, $content_range);
 
-        return $this->getSluggedFileName($uniqueFileName);
+        return ($this->getUniqueFilename($source_name, $type, $index, $content_range));
     }
 
     /**
@@ -67,7 +70,6 @@ class Slug implements FileNameGenerator
         }
 
         $uploaded_bytes = Util::fixIntegerOverflow(intval($content_range[1] ?? $content_range[0]));
-
         while ($this->fileSystem->isFile($this->pathResolver->getUploadPath($this->getSluggedFileName($name)))) {
             if ($uploaded_bytes == $this->fileSystem->getFilesize($this->pathResolver->getUploadPath($this->getSluggedFileName($name)))) {
                 break;
@@ -90,31 +92,8 @@ class Slug implements FileNameGenerator
         $extension = array_pop($fileNameExploded);
         $fileNameExploded = implode(".", $fileNameExploded);
 
-        return $this->slugify($fileNameExploded) . "." . $extension;
-    }
-
-    /**
-     * @param $text
-     *
-     * @return mixed|string
-     */
-    private function slugify($text)
-    {
-        // replace non letter or digits by -
-        $text = preg_replace('~[^\\pL\d]+~u', '-', $text);
-        // trim
-        $text = trim($text, '-');
-        // transliterate
-        $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
-        // lowercase
-        $text = strtolower($text);
-        // remove unwanted characters
-        $text = preg_replace('~[^-\w]+~', '', $text);
-
-        if (empty($text)) {
-            return 'n-a';
-        }
-
-        return $text;
+        $slugify = new Slugify(['separator' => '_', 'rulesets' => ['turkish'], 'strip_tags' => true]);
+        $slugify->activateRuleSet('turkish');
+        return $slugify->slugify($fileNameExploded).'.'.$extension;
     }
 }

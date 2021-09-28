@@ -13,23 +13,23 @@ class Random implements FileNameGenerator
      * Maximum length of the filename
      * @var int
      */
-    private $name_length = 32;
+    private $nameLength = 32;
 
     /**
-     * Pathresolver
+     * PathResolver
      * @var PathResolver
      */
-    private $pathresolver;
+    private $pathResolver;
 
     /**
      * Filesystem
      * @var FileSystem
      */
-    private $filesystem;
+    private $fileSystem;
 
-    public function __construct($name_length = 32)
+    public function __construct($nameLength = 32)
     {
-        $this->name_length = $name_length;
+        $this->nameLength = $nameLength;
     }
 
     /**
@@ -44,8 +44,8 @@ class Random implements FileNameGenerator
      */
     public function getFileName($source_name, $type, $tmp_name, $index, $content_range, FileUpload $upload)
     {
-        $this->pathresolver = $upload->getPathResolver();
-        $this->filesystem = $upload->getFileSystem();
+        $this->pathResolver = $upload->getPathResolver();
+        $this->fileSystem = $upload->getFileSystem();
         $extension = pathinfo($source_name, PATHINFO_EXTENSION);
 
         return ($this->getUniqueFilename($source_name, $type, $index, $content_range, $extension));
@@ -63,14 +63,14 @@ class Random implements FileNameGenerator
     protected function getUniqueFilename($name, $type, $index, $content_range, $extension)
     {
         $name = $this->generateRandom() . "." . $extension;
-        while ($this->filesystem->isDir($this->pathresolver->getUploadPath($name))) {
+        while ($this->fileSystem->isDir($this->pathResolver->getUploadPath($name))) {
             $name = $this->generateRandom() . "." . $extension;
         }
 
         $uploaded_bytes = Util::fixIntegerOverflow(intval($content_range[1]));
 
-        while ($this->filesystem->isFile($this->pathresolver->getUploadPath($name))) {
-            if ($uploaded_bytes == $this->filesystem->getFilesize($this->pathresolver->getUploadPath($name))) {
+        while ($this->fileSystem->isFile($this->pathResolver->getUploadPath($name))) {
+            if ($uploaded_bytes == $this->fileSystem->getFilesize($this->pathResolver->getUploadPath($name))) {
                 break;
             }
 
@@ -87,7 +87,7 @@ class Random implements FileNameGenerator
                 "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
             ),
             0,
-            $this->name_length
+            $this->nameLength
         );
     }
 }

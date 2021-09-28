@@ -35,11 +35,11 @@ interface FileSystem
 
     /**
      * Move file
-     * @param  string $from_path
-     * @param  string $to_path
+     * @param  string $fromPath
+     * @param  string $toPath
      * @return boolean
      */
-    public function moveUploadedFile($from_path, $to_path);
+    public function moveUploadedFile($fromPath, $toPath);
 
     /**
      * Write file or append to file

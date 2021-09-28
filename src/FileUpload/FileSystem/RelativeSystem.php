@@ -1,9 +1,33 @@
 <?php
+/**
+ * author : Mahmut Özdemir
+ * web    : www.mahmutozdemir.com.tr
+ * email  : bilgi@mahmutozdemir.com.tr
+ * ----------------------------------------
+ * Date   : 2021-09-28 15:28
+ * File   : RelativeSystem.php
+ */
 
 namespace FileUpload\FileSystem;
 
-class Simple implements FileSystem
+class RelativeSystem implements FileSystem
 {
+    /**
+     * create directory
+     *
+     * @param $path
+     */
+    public function createDir($path)
+    {
+        $paths = explode('/', $path);
+        array_pop($paths);
+        $path = implode('/', $paths);
+
+        if(!$this->isDir($path)){
+            mkdir($path, 0775, true);
+        }
+    }
+
     /**
      * @see FileSystem
      */
@@ -41,6 +65,7 @@ class Simple implements FileSystem
      */
     public function moveUploadedFile($fromPath, $toPath)
     {
+        $this->createDir($toPath);
         return copy($fromPath, $toPath) && unlink($fromPath);
     }
 
@@ -49,6 +74,7 @@ class Simple implements FileSystem
      */
     public function writeToFile($path, $stream, $append = false)
     {
+        $this->createDir($path);
         return file_put_contents($path, $stream, $append ? \FILE_APPEND : 0);
     }
 

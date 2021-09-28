@@ -19,13 +19,13 @@ class FileUploadFactory
      * PathResolver to be used in the factory
      * @var PathResolver
      */
-    protected $pathresolver;
+    protected $pathResolver;
 
     /**
      * FileSystem to be used in the factory
      * @var FileSystem
      */
-    protected $filesystem;
+    protected $fileSystem;
 
     /**
      * FileNameGenerator to be used in the factory
@@ -35,19 +35,19 @@ class FileUploadFactory
 
     /**
      * Construct new factory with the given modules
-     * @param PathResolver $pathresolver
-     * @param FileSystem $filesystem
+     * @param PathResolver $pathResolver
+     * @param FileSystem $fileSystem
      * @param array $validators
      * @param FileNameGenerator\FileNameGenerator|null $fileNameGenerator
      */
     public function __construct(
-        PathResolver $pathresolver,
-        FileSystem $filesystem,
+        PathResolver $pathResolver,
+        FileSystem $fileSystem,
         $validators = [],
         FileNameGenerator\FileNameGenerator $fileNameGenerator = null
     ) {
-        $this->pathresolver = $pathresolver;
-        $this->filesystem = $filesystem;
+        $this->pathResolver = $pathResolver;
+        $this->fileSystem = $fileSystem;
         $this->validators = $validators;
         $this->fileNameGenerator = $fileNameGenerator;
     }
@@ -61,8 +61,8 @@ class FileUploadFactory
     public function create($upload, $server)
     {
         $fileupload = new FileUpload($upload, $server);
-        $fileupload->setPathResolver($this->pathresolver);
-        $fileupload->setFileSystem($this->filesystem);
+        $fileupload->setPathResolver($this->pathResolver);
+        $fileupload->setFileSystem($this->fileSystem);
         if (null !== $this->fileNameGenerator) {
             $fileupload->setFileNameGenerator($this->fileNameGenerator);
         }

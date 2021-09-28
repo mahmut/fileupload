@@ -17,6 +17,20 @@ class File extends \SplFileInfo
     public $errorCode = 0;
 
     /**
+     * directory name
+     *
+     * @var string
+     */
+    public $directory;
+
+    /**
+     * file relative path
+     *
+     * @var string
+     */
+    public $relativePath;
+
+    /**
      * Preset unknown mime type
      * @var string
      */
@@ -33,6 +47,12 @@ class File extends \SplFileInfo
      */
     public $completed = false;
 
+    /**
+     * File constructor.
+     *
+     * @param $fileName
+     * @param string $clientFileName
+     */
     public function __construct($fileName, $clientFileName = '')
     {
         $this->setMimeType($fileName);
@@ -40,6 +60,11 @@ class File extends \SplFileInfo
         parent::__construct($fileName);
     }
 
+    /**
+     * set mime type
+     *
+     * @param $fileName
+     */
     protected function setMimeType($fileName)
     {
         if (file_exists($fileName)) {
@@ -49,6 +74,7 @@ class File extends \SplFileInfo
 
     /**
      * Returns the "original" name of the file
+     *
      * @return string
      */
     public function getClientFileName()
@@ -56,6 +82,12 @@ class File extends \SplFileInfo
         return $this->clientFileName;
     }
 
+    /**
+     * get mime type
+     *
+     * @return string
+     * @throws \Exception
+     */
     public function getMimeType()
     {
         if ($this->getType() !== 'file') {
@@ -67,6 +99,7 @@ class File extends \SplFileInfo
 
     /**
      * Does this file have an image mime type?
+     *
      * @return boolean
      */
     public function isImage()

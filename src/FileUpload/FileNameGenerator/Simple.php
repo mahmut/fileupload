@@ -17,16 +17,16 @@ class Simple implements FileNameGenerator
 {
 
     /**
-     * Pathresolver
+     * PathResolver
      * @var PathResolver
      */
-    private $pathresolver;
+    private $pathResolver;
 
     /**
      * Filesystem
      * @var FileSystem
      */
-    private $filesystem;
+    private $fileSystem;
 
     /**
      * Get file_name
@@ -40,8 +40,8 @@ class Simple implements FileNameGenerator
      */
     public function getFileName($source_name, $type, $tmp_name, $index, $content_range, FileUpload $upload)
     {
-        $this->filesystem = $upload->getFileSystem();
-        $this->pathresolver = $upload->getPathResolver();
+        $this->fileSystem = $upload->getFileSystem();
+        $this->pathResolver = $upload->getPathResolver();
 
         return ($this->getUniqueFilename($source_name, $type, $index, $content_range));
     }
@@ -60,18 +60,18 @@ class Simple implements FileNameGenerator
             $content_range = [0];
         }
 
-        while ($this->filesystem->isDir($this->pathresolver->getUploadPath($name))) {
-            $name = $this->pathresolver->upcountName($name);
+        while ($this->fileSystem->isDir($this->pathResolver->getUploadPath($name))) {
+            $name = $this->pathResolver->upcountName($name);
         }
 
         $uploaded_bytes = Util::fixIntegerOverflow(intval($content_range[1] ?? $content_range[0]));
 
-        while ($this->filesystem->isFile($this->pathresolver->getUploadPath($name))) {
-            if ($uploaded_bytes == $this->filesystem->getFilesize($this->pathresolver->getUploadPath($name))) {
+        while ($this->fileSystem->isFile($this->pathResolver->getUploadPath($name))) {
+            if ($uploaded_bytes == $this->fileSystem->getFilesize($this->pathResolver->getUploadPath($name))) {
                 break;
             }
 
-            $name = $this->pathresolver->upcountName($name);
+            $name = $this->pathResolver->upcountName($name);
         }
 
         return $name;

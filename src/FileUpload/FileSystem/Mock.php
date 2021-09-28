@@ -39,9 +39,9 @@ class Mock implements FileSystem
     /**
      * @see FileSystem
      */
-    public function moveUploadedFile($from_path, $to_path)
+    public function moveUploadedFile($fromPath, $toPath)
     {
-        return rename($from_path, $to_path);
+        return rename($fromPath, $toPath);
     }
 
     /**

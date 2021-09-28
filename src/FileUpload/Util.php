@@ -10,7 +10,6 @@ namespace FileUpload;
 
 class Util
 {
-
     /**
      * Convert human readable file size (e.g. "10K" or "3M") into bytes
      *
@@ -36,10 +35,10 @@ class Util
 
     /**
      * Ensure correct value for big integers
+     *
      * @param  integer $int
      * @return float
      */
-
     public static function fixIntegerOverflow($int)
     {
 

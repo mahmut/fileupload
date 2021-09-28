@@ -8,15 +8,15 @@ class Simple implements PathResolver
      * Main path
      * @var string
      */
-    protected $main_path;
+    protected $mainPath;
 
     /**
      * A construct to remember
-     * @param string $main_path Where files should be stored
+     * @param string $mainPath Where files should be stored
      */
-    public function __construct($main_path)
+    public function __construct($mainPath)
     {
-        $this->main_path = $main_path;
+        $this->mainPath = $mainPath;
     }
 
     /**
@@ -24,7 +24,7 @@ class Simple implements PathResolver
      */
     public function getUploadPath($name = null)
     {
-        return $this->main_path . '/' . $name;
+        return $this->mainPath . '/' . $name;
     }
 
     /**
@@ -38,5 +38,26 @@ class Simple implements PathResolver
 
             return ' (' . $index . ')' . $ext;
         }, $name, 1);
+    }
+
+    /**
+     * get relative path
+     *
+     * @param null $name
+     * @return mixed
+     */
+    public function getRelativePath($name = null)
+    {
+        return $name;
+    }
+
+    /**
+     * get directory name
+     *
+     * @return string
+     */
+    public function getDirectory()
+    {
+        return '';
     }
 }

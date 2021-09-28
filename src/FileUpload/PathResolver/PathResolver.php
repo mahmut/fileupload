@@ -12,6 +12,21 @@ interface PathResolver
     public function getUploadPath($name = null);
 
     /**
+     * get relative path
+     *
+     * @param null $name
+     * @return mixed
+     */
+    public function getRelativePath($name = null);
+
+    /**
+     * get directory name
+     *
+     * @return string
+     */
+    public function getDirectory();
+
+    /**
      * Ensure consistent name
      * @param  string $name
      * @return string
